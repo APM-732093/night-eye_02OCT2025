@@ -1,0 +1,3025 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: #000000;
+    color: #ffffff;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+#gameContainer {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    pointer-events: none;
+}
+
+.screen.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Start Screen Styles */
+#startScreen {
+    background: radial-gradient(circle at center, #111111 0%, #000000 70%);
+}
+
+.title-container {
+    text-align: center;
+    margin-bottom: 80px;
+    animation: titleGlow 3s ease-in-out infinite alternate;
+}
+
+.game-title {
+    font-size: 4.5rem;
+    font-weight: bold;
+    letter-spacing: 0.2em;
+    text-shadow:
+        0 0 20px #ffffff,
+        0 0 40px #ffffff,
+        0 0 60px #ffffff;
+    margin-bottom: 20px;
+}
+
+.eye-icon {
+    display: inline-block;
+    font-size: 4rem;
+    margin: 0 20px;
+    animation: eyeBlink 4s infinite;
+    filter: drop-shadow(0 0 20px #ffffff);
+}
+
+.play-button {
+    background: transparent;
+    border: 3px solid #ffffff;
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: bold;
+    padding: 15px 40px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.play-button:hover {
+    background: #ffffff;
+    color: #000000;
+    box-shadow: 0 0 30px #ffffff;
+    transform: scale(1.05);
+}
+
+.play-button:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.play-button:hover:before {
+    left: 100%;
+}
+
+/* Selection Screen Styles */
+#selectionScreen {
+    background: radial-gradient(circle at center, #0a0a0a 0%, #000000 70%);
+}
+
+.selection-container {
+    text-align: center;
+}
+
+.selection-title {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    text-shadow: 0 0 20px #ffffff;
+    letter-spacing: 0.1em;
+}
+
+.profile-title {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    text-shadow: 0 0 15px #ffffff;
+    letter-spacing: 0.1em;
+    opacity: 0.9;
+}
+
+.rectangles-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.game-rectangle {
+    width: 400px;
+    height: 85px;
+    border: 3px solid #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    backdrop-filter: blur(5px);
+}
+
+.game-rectangle:hover {
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);
+    border-color: #ffffff;
+}
+
+.rectangle-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 33.33%;
+}
+
+.new-game-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 15px #ffffff;
+}
+
+.rectangle-number {
+    position: absolute;
+    bottom: 12px;
+    right: 18px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    opacity: 0.8;
+}
+
+.back-button {
+    background: transparent;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 12px 30px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+.back-button:hover {
+    background: #ffffff;
+    color: #000000;
+    box-shadow: 0 0 20px #ffffff;
+    transform: scale(1.05);
+}
+
+.back-button:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.back-button:hover:before {
+    left: 100%;
+}
+
+/* Game Screen Styles */
+#gameScreen {
+    background: #000000;
+}
+
+.game-area {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-animation {
+    text-align: center;
+}
+
+.loading-text {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    animation: pulse 2s infinite;
+}
+
+.loading-bar {
+    width: 300px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.loading-progress {
+    height: 100%;
+    background: linear-gradient(90deg, #ffffff, #cccccc);
+    width: 0%;
+    animation: loadingProgress 3s ease-in-out forwards;
+    border-radius: 3px;
+}
+
+/* Animations */
+@keyframes titleGlow {
+    0% { text-shadow: 0 0 20px #ffffff, 0 0 40px #ffffff, 0 0 60px #ffffff; }
+    100% { text-shadow: 0 0 30px #ffffff, 0 0 60px #ffffff, 0 0 90px #ffffff; }
+}
+
+@keyframes eyeBlink {
+    0%, 90%, 100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.1); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes loadingProgress {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
+/* Fade transition effects */
+.fade-out {
+    animation: fadeOut 0.8s ease-in-out forwards;
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Demon Cat Animation Screen Styles */
+#demonCatScreen {
+    background: linear-gradient(to bottom, #0a0a0a 0%, #1a0a1a 50%, #000000 100%);
+    overflow: hidden;
+}
+
+.village-scene {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Background Layers */
+.bg-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: repeat-x;
+    background-position: bottom;
+}
+
+.bg-far {
+    background: linear-gradient(to bottom, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+    z-index: 1;
+    animation: parallaxFar 20s linear infinite;
+}
+
+.bg-mid {
+    background: linear-gradient(to bottom, rgba(20, 20, 40, 0.8) 60%, rgba(10, 10, 20, 0.9) 100%);
+    z-index: 2;
+    animation: parallaxMid 15s linear infinite;
+}
+
+.bg-near {
+    background: linear-gradient(to bottom, transparent 70%, rgba(5, 5, 15, 0.6) 100%);
+    z-index: 3;
+    animation: parallaxNear 10s linear infinite;
+}
+
+/* Village Elements */
+.village-container {
+    position: absolute;
+    bottom: 15%;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    z-index: 4;
+}
+
+.house {
+    position: absolute;
+    width: 120px;
+    height: 150px;
+    background: linear-gradient(to bottom, #2a1f2a 0%, #1a1520 100%);
+    border: 2px solid #3a2f3a;
+    border-radius: 5px 5px 0 0;
+}
+
+.house:before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    left: -10px;
+    width: 140px;
+    height: 40px;
+    background: linear-gradient(to bottom, #1a1520 0%, #2a1f2a 100%);
+    border-radius: 20px 20px 5px 5px;
+    border: 2px solid #3a2f3a;
+}
+
+.house-1 {
+    left: 20%;
+    animation: houseFloat 6s ease-in-out infinite;
+}
+
+.house-2 {
+    left: 45%;
+    animation: houseFloat 8s ease-in-out infinite reverse;
+    animation-delay: 1s;
+}
+
+.house-3 {
+    left: 70%;
+    animation: houseFloat 7s ease-in-out infinite;
+    animation-delay: 2s;
+}
+
+.window {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 40px;
+    background: #1a1a1a;
+    border: 2px solid #4a3f4a;
+    border-radius: 5px;
+}
+
+.window-glow {
+    box-shadow: 0 0 20px rgba(255, 200, 100, 0.3);
+    background: linear-gradient(to bottom, #2a2a1a 0%, #1a1a0a 100%);
+}
+
+.cat-silhouette {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 15px;
+    background: #000;
+    border-radius: 50% 50% 0 0;
+    opacity: 0.8;
+}
+
+.cat-silhouette:before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 2px;
+    width: 4px;
+    height: 6px;
+    background: #000;
+    border-radius: 50% 50% 50% 0;
+    box-shadow: 12px 0 0 #000;
+}
+
+.cat-silhouette:after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: -8px;
+    width: 15px;
+    height: 2px;
+    background: #000;
+    border-radius: 50%;
+}
+
+/* Village Cats */
+.village-cats {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+}
+
+.village-cat {
+    position: absolute;
+    width: 30px;
+    height: 20px;
+    background: linear-gradient(to bottom, #4a4a4a 0%, #2a2a2a 100%);
+    border-radius: 50% 50% 0 0;
+    transition: all 0.5s ease;
+}
+
+.village-cat:before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 3px;
+    width: 3px;
+    height: 5px;
+    background: #3a3a3a;
+    border-radius: 50% 50% 50% 0;
+    box-shadow: 20px 0 0 #3a3a3a;
+}
+
+.village-cat:after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: -15px;
+    width: 20px;
+    height: 3px;
+    background: #3a3a3a;
+    border-radius: 50%;
+    animation: tailWag 2s ease-in-out infinite;
+}
+
+.cat-small {
+    transform: scale(0.8);
+}
+
+.cat-medium {
+    transform: scale(1);
+}
+
+.cat-large {
+    transform: scale(1.2);
+}
+
+.cat-sitting {
+    transform: scale(0.9);
+    border-radius: 50%;
+}
+
+.village-cat.fleeing {
+    animation: catFlee 0.8s ease-in-out;
+}
+
+/* Enhanced Demon Cat with Incredible Detail */
+.demon-cat-container {
+    position: absolute;
+    bottom: 15%;
+    left: -100px;
+    width: 80px;
+    height: 100px;
+    z-index: 6;
+    animation: demonCatWalk 12s linear infinite;
+}
+
+.demon-cat {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.simple-cat-body {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(-1);
+    width: 100%;
+    height: 100%;
+}
+
+/* Simple Black Cat */
+
+/* Head */
+.cat-head {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35px;
+    height: 35px;
+    z-index: 10;
+}
+
+.head-base {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 25px;
+    background: #000;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Horn */
+.cat-horn {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 15px;
+    background: linear-gradient(to top, #333 0%, #ff6b35 50%, #ffaa00 100%);
+    border-radius: 0 0 50% 50%;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%);
+    box-shadow: 0 0 10px rgba(255, 170, 0, 0.8);
+    animation: hornGlow 2s ease-in-out infinite alternate;
+}
+
+/* Ears */
+.cat-ears {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35px;
+    height: 15px;
+}
+
+.ear {
+    position: absolute;
+    width: 8px;
+    height: 12px;
+    background: #000;
+    border-radius: 80% 80% 20% 20%;
+}
+
+.left-ear {
+    left: 6px;
+    transform: rotate(-15deg);
+}
+
+.right-ear {
+    right: 6px;
+    transform: rotate(15deg);
+}
+
+/* Face */
+.cat-face {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25px;
+    height: 15px;
+}
+
+.eye {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #ff0040;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #ff0040;
+    animation: eyeGlow 2s ease-in-out infinite alternate;
+}
+
+.left-eye {
+    left: 5px;
+}
+
+.right-eye {
+    right: 5px;
+}
+
+.nose {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 2px;
+    background: #333;
+    border-radius: 50%;
+}
+
+.mouth {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 1px;
+    background: #333;
+    border-radius: 50%;
+}
+
+/* Body */
+.cat-torso {
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25px;
+    height: 35px;
+    background: #000;
+    border-radius: 15px 15px 8px 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+    animation: bodyBreathe 2s ease-in-out infinite;
+}
+
+/* Arms */
+.cat-arms {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35px;
+    height: 25px;
+}
+
+.arm {
+    position: absolute;
+    width: 8px;
+    height: 25px;
+    background: #000;
+    border-radius: 4px;
+}
+
+.left-arm {
+    left: 0;
+    animation: leftArmSwing 1.2s ease-in-out infinite;
+}
+
+.right-arm {
+    right: 0;
+    animation: rightArmSwing 1.2s ease-in-out infinite;
+}
+
+/* Shorts */
+.cat-shorts {
+    position: absolute;
+    top: 55px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 15px;
+    background: linear-gradient(45deg, #333 0%, #555 50%, #333 100%);
+    border-radius: 3px;
+    border: 1px solid #666;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Legs */
+.cat-legs {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25px;
+    height: 35px;
+}
+
+.leg {
+    position: absolute;
+    width: 8px;
+    height: 35px;
+    background: #000;
+    border-radius: 4px 4px 6px 6px;
+    bottom: 0;
+}
+
+.left-leg {
+    left: 4px;
+    animation: leftLegWalk 1.2s ease-in-out infinite;
+}
+
+.right-leg {
+    right: 4px;
+    animation: rightLegWalk 1.2s ease-in-out infinite;
+}
+
+/* Tail */
+.cat-tail {
+    position: absolute;
+    top: 60px;
+    right: -15px;
+    width: 20px;
+    height: 6px;
+    background: #000;
+    border-radius: 50%;
+    transform-origin: left center;
+    animation: tailSwish 1.5s ease-in-out infinite alternate;
+}
+
+.head-base {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(45deg, #2a0f2a 0%, #1a0a1a 50%, #3a0a3a 100%);
+    border-radius: 50%;
+    box-shadow:
+        0 0 20px rgba(138, 43, 226, 0.6),
+        inset 0 3px 6px rgba(0, 0, 0, 0.8),
+        inset 0 -3px 6px rgba(60, 20, 60, 0.3);
+    border: 2px solid #4a1f4a;
+}
+
+.head-markings {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 30px;
+}
+
+.marking {
+    position: absolute;
+    background: linear-gradient(45deg, #ff6b35 0%, #ffaa00 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(255, 170, 0, 0.8);
+    animation: markingPulse 3s ease-in-out infinite;
+}
+
+.mark-1 {
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 8px;
+    border-radius: 50% 50% 0 0;
+}
+
+.mark-2 {
+    top: 12px;
+    left: 8px;
+    width: 2px;
+    height: 2px;
+    animation-delay: 0.5s;
+}
+
+.mark-3 {
+    top: 12px;
+    right: 8px;
+    width: 2px;
+    height: 2px;
+    animation-delay: 1s;
+}
+
+/* Enhanced Horn System */
+.demon-cat-horn {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 40px;
+    z-index: 15;
+}
+
+.horn-segment {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 0 0 50% 50%;
+    clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
+    animation: hornSegmentGlow 2.5s ease-in-out infinite alternate;
+}
+
+.segment-1 {
+    bottom: 0;
+    width: 12px;
+    height: 15px;
+    background: linear-gradient(to top, #2a0a2a 0%, #4a1f4a 50%, #ff6b35 100%);
+    box-shadow: 0 0 15px rgba(255, 107, 53, 0.6);
+}
+
+.segment-2 {
+    bottom: 12px;
+    width: 10px;
+    height: 15px;
+    background: linear-gradient(to top, #ff6b35 0%, #ffaa00 50%, #fff700 100%);
+    box-shadow: 0 0 20px rgba(255, 170, 0, 0.8);
+    animation-delay: 0.3s;
+}
+
+.segment-3 {
+    bottom: 24px;
+    width: 8px;
+    height: 16px;
+    background: linear-gradient(to top, #ffaa00 0%, #fff700 50%, #ffffff 100%);
+    box-shadow: 0 0 25px rgba(255, 247, 0, 1);
+    animation-delay: 0.6s;
+}
+
+.horn-runes {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 30px;
+}
+
+.rune {
+    position: absolute;
+    width: 2px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    animation: runeFlicker 1.8s ease-in-out infinite;
+}
+
+.rune-1 {
+    top: 8px;
+    left: 2px;
+}
+
+.rune-2 {
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation-delay: 0.6s;
+}
+
+.rune-3 {
+    top: 8px;
+    right: 2px;
+    animation-delay: 1.2s;
+}
+
+.horn-crown {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 8px;
+    background: radial-gradient(circle, #ffffff 0%, #fff700 50%, transparent 100%);
+    border-radius: 50%;
+    animation: crownPulse 1.5s ease-in-out infinite;
+    box-shadow: 0 0 15px #ffffff;
+}
+
+/* Detailed Face */
+.demon-cat-face {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 25px;
+}
+
+.eye-sockets {
+    position: relative;
+    width: 100%;
+    height: 12px;
+}
+
+.eye {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #000;
+    border-radius: 50%;
+    border: 1px solid #4a1f4a;
+}
+
+.left-eye {
+    left: 6px;
+}
+
+.right-eye {
+    right: 6px;
+}
+
+.eye-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    background: radial-gradient(circle, #ff0040 0%, #ff6080 50%, transparent 100%);
+    border-radius: 50%;
+    animation: eyeIntensePulse 2s ease-in-out infinite alternate;
+}
+
+.eye-pupil {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 2px;
+    height: 4px;
+    background: #ff0040;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #ff0040;
+}
+
+.nose-bridge {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 6px;
+    background: linear-gradient(to bottom, #4a1f4a 0%, #2a0a2a 100%);
+    border-radius: 50%;
+}
+
+.mouth-area {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 6px;
+}
+
+.fang {
+    position: absolute;
+    width: 2px;
+    height: 6px;
+    background: linear-gradient(to bottom, #fff 0%, #ccc 100%);
+    border-radius: 0 0 50% 50%;
+    clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.6);
+}
+
+.fang-left {
+    left: 2px;
+}
+
+.fang-right {
+    right: 2px;
+}
+
+/* Cat Ears */
+.cat-ears {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 45px;
+    height: 20px;
+}
+
+.ear {
+    position: absolute;
+    width: 12px;
+    height: 18px;
+    background: linear-gradient(45deg, #2a0f2a 0%, #4a1f4a 100%);
+    border-radius: 80% 80% 20% 20%;
+    border: 1px solid #6a2f6a;
+    box-shadow: 0 0 10px rgba(138, 43, 226, 0.4);
+}
+
+.ear-left {
+    left: 8px;
+    transform: rotate(-15deg);
+}
+
+.ear-right {
+    right: 8px;
+    transform: rotate(15deg);
+}
+
+.ear-inner {
+    position: absolute;
+    top: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 10px;
+    background: linear-gradient(45deg, #1a0a1a 0%, #3a1f3a 100%);
+    border-radius: 80% 80% 20% 20%;
+}
+
+.ear-tuft {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 8px;
+    background: linear-gradient(to top, #4a1f4a 0%, #ff6b35 100%);
+    border-radius: 50%;
+    animation: tuftGlow 2.2s ease-in-out infinite alternate;
+}
+
+/* Torso Structure */
+.demon-cat-torso {
+    position: absolute;
+    top: 55px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 70px;
+}
+
+.torso-base {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 45px;
+    height: 65px;
+    background: linear-gradient(45deg, #1a0a1a 0%, #2a0f2a 30%, #1a0a1a 100%);
+    border-radius: 25px 25px 15px 15px;
+    box-shadow:
+        0 0 25px rgba(138, 43, 226, 0.6),
+        inset 0 5px 10px rgba(0, 0, 0, 0.8),
+        inset 0 -5px 10px rgba(60, 20, 60, 0.3);
+    border: 2px solid #4a1f4a;
+    animation: torsoBreathing 2.5s ease-in-out infinite;
+}
+
+.chest-plate {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 35px;
+    height: 25px;
+}
+
+.plate-segments {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.segment {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(45deg, #4a1f4a 0%, #6a2f6a 50%, #4a1f4a 100%);
+    border-radius: 8px;
+    border: 1px solid #8a3f8a;
+    box-shadow: 0 0 8px rgba(138, 63, 138, 0.4);
+}
+
+.seg-1 {
+    top: 0;
+    width: 30px;
+    height: 6px;
+}
+
+.seg-2 {
+    top: 8px;
+    width: 25px;
+    height: 5px;
+}
+
+.seg-3 {
+    top: 15px;
+    width: 20px;
+    height: 4px;
+}
+
+.chest-crystal {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle, #ff6b35 0%, #ffaa00 50%, #fff700 100%);
+    border-radius: 20%;
+    transform: translateX(-50%) rotate(45deg);
+    box-shadow: 0 0 15px rgba(255, 170, 0, 0.8);
+    animation: crystalPulse 1.8s ease-in-out infinite;
+}
+
+.torso-markings {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 50px;
+}
+
+.spine-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 45px;
+    background: linear-gradient(to bottom, #ff6b35 0%, #4a1f4a 50%, #ff6b35 100%);
+    border-radius: 50%;
+    animation: spineGlow 3s ease-in-out infinite alternate;
+}
+
+.side-runes {
+    position: absolute;
+    top: 15px;
+    width: 100%;
+    height: 20px;
+}
+
+.side-rune {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 170, 0, 0.8);
+    border-radius: 50%;
+    animation: sideRunePulse 2.5s ease-in-out infinite;
+}
+
+.left-rune {
+    left: 8px;
+}
+
+.right-rune {
+    right: 8px;
+    animation-delay: 1.25s;
+}
+
+.shoulder-guards {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 55px;
+    height: 20px;
+}
+
+.guard {
+    position: absolute;
+    width: 18px;
+    height: 15px;
+    background: linear-gradient(45deg, #6a2f6a 0%, #4a1f4a 50%, #8a3f8a 100%);
+    border-radius: 8px 8px 0 0;
+    border: 2px solid #aa4faa;
+    box-shadow: 0 0 12px rgba(170, 79, 170, 0.5);
+}
+
+.left-guard {
+    left: 0;
+    transform: rotate(-10deg);
+}
+
+/* Arms */
+.demon-cat-arms {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 60px;
+}
+
+.arm {
+    position: absolute;
+    width: 30px;
+    height: 50px;
+}
+
+.left-arm {
+    left: -5px;
+    animation: leftArmSwing 1.4s ease-in-out infinite;
+}
+
+.right-arm {
+    right: -5px;
+    animation: rightArmSwing 1.4s ease-in-out infinite;
+}
+
+.upper-arm {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 20px;
+    background: linear-gradient(to bottom, #2a0f2a 0%, #1a0a1a 100%);
+    border-radius: 8px 8px 4px 4px;
+    border: 1px solid #4a1f4a;
+}
+
+.arm-armor {
+    position: absolute;
+    top: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 6px;
+    background: linear-gradient(45deg, #6a2f6a 0%, #8a3f8a 100%);
+    border-radius: 4px;
+    border: 1px solid #aa4faa;
+    box-shadow: 0 0 6px rgba(170, 79, 170, 0.4);
+}
+
+.arm-joint {
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: #4a1f4a;
+    border-radius: 50%;
+    border: 2px solid #6a2f6a;
+}
+
+.forearm {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 18px;
+    background: linear-gradient(to bottom, #1a0a1a 0%, #0a0a0a 100%);
+    border-radius: 6px;
+    border: 1px solid #3a1f3a;
+}
+
+.forearm-guard {
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 4px;
+    background: linear-gradient(45deg, #5a2f5a 0%, #7a3f7a 100%);
+    border-radius: 3px;
+    border: 1px solid #9a4f9a;
+}
+
+.wrist-joint {
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: #3a1f3a;
+    border-radius: 50%;
+    border: 1px solid #5a2f5a;
+}
+
+.hand {
+    position: absolute;
+    top: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 12px;
+    background: linear-gradient(45deg, #2a0f2a 0%, #1a0a1a 100%);
+    border-radius: 8px 8px 4px 4px;
+    border: 1px solid #4a1f4a;
+}
+
+.claw {
+    position: absolute;
+    width: 2px;
+    height: 8px;
+    background: linear-gradient(to bottom, #fff 0%, #aaa 100%);
+    border-radius: 0 0 50% 50%;
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.4);
+    animation: clawFlicker 2.8s ease-in-out infinite;
+}
+
+.hand .claw-1 {
+    bottom: -6px;
+    left: 2px;
+}
+
+.hand .claw-2 {
+    bottom: -7px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.hand .claw-3 {
+    bottom: -6px;
+    right: 2px;
+}
+
+/* Enhanced Multi-Segment Tail */
+.demon-cat-tail {
+    position: absolute;
+    top: 85px;
+    right: -45px;
+    width: 80px;
+    height: 25px;
+    transform-origin: left center;
+    animation: complexTailSwish 2s ease-in-out infinite alternate;
+}
+
+.tail-segment {
+    position: absolute;
+    background: linear-gradient(45deg, #2a0f2a 0%, #1a0a1a 50%, #3a0a3a 100%);
+    border-radius: 50%;
+    border: 1px solid #4a1f4a;
+    box-shadow: 0 0 8px rgba(138, 43, 226, 0.3);
+}
+
+.tail-segment.seg-1 {
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 25px;
+    height: 12px;
+    animation: tailSeg1 2s ease-in-out infinite alternate;
+}
+
+.tail-segment.seg-2 {
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 10px;
+    animation: tailSeg2 2s ease-in-out infinite alternate;
+    animation-delay: 0.2s;
+}
+
+.tail-segment.seg-3 {
+    left: 35px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 8px;
+    animation: tailSeg3 2s ease-in-out infinite alternate;
+    animation-delay: 0.4s;
+}
+
+.tail-segment.seg-4 {
+    left: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 15px;
+    height: 6px;
+    animation: tailSeg4 2s ease-in-out infinite alternate;
+    animation-delay: 0.6s;
+}
+
+.tail-tip {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 8px;
+}
+
+.tip-spikes {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.spike {
+    position: absolute;
+    width: 3px;
+    height: 6px;
+    background: linear-gradient(to top, #4a1f4a 0%, #ff6b35 100%);
+    border-radius: 0 0 50% 50%;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%);
+    animation: spikeGlow 2.2s ease-in-out infinite alternate;
+}
+
+.spike-1 {
+    left: 1px;
+    top: 0;
+}
+
+.spike-2 {
+    left: 50%;
+    transform: translateX(-50%);
+    top: -2px;
+    animation-delay: 0.3s;
+}
+
+.spike-3 {
+    right: 1px;
+    top: 0;
+    animation-delay: 0.6s;
+}
+
+.tail-energy {
+    position: absolute;
+    top: -10px;
+    left: 0;
+    width: 100%;
+    height: 30px;
+}
+
+.energy-orb {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, #ff6b35 0%, #ffaa00 50%, transparent 100%);
+    border-radius: 50%;
+    animation: orbFloat 2.5s ease-in-out infinite;
+}
+
+.orb-1 {
+    left: 15px;
+    top: 8px;
+}
+
+.orb-2 {
+    left: 35px;
+    top: 5px;
+    animation-delay: 0.8s;
+}
+
+.orb-3 {
+    left: 55px;
+    top: 10px;
+    animation-delay: 1.6s;
+}
+
+/* Super Detailed Legs */
+.demon-cat-legs {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 50px;
+}
+
+.leg {
+    position: absolute;
+    width: 25px;
+    height: 45px;
+}
+
+.left-leg {
+    left: 8px;
+    animation: detailedLeftLegWalk 1.4s ease-in-out infinite;
+}
+
+.right-leg {
+    right: 8px;
+    animation: detailedRightLegWalk 1.4s ease-in-out infinite;
+}
+
+.thigh {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 20px;
+    background: linear-gradient(to bottom, #2a0f2a 0%, #1a0a1a 100%);
+    border-radius: 10px 10px 6px 6px;
+    border: 1px solid #4a1f4a;
+}
+
+.thigh-armor {
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 8px;
+    background: linear-gradient(45deg, #6a2f6a 0%, #8a3f8a 100%);
+    border-radius: 6px;
+    border: 1px solid #aa4faa;
+    box-shadow: 0 0 8px rgba(170, 79, 170, 0.4);
+}
+
+.thigh-markings {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 8px;
+    background: linear-gradient(to bottom, #ff6b35 0%, #ffaa00 100%);
+    border-radius: 50%;
+    animation: thighMarkGlow 2.8s ease-in-out infinite alternate;
+}
+
+.knee-joint {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 8px;
+    background: #4a1f4a;
+    border-radius: 50%;
+    border: 2px solid #6a2f6a;
+}
+
+.joint-guard {
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 6px;
+    background: linear-gradient(45deg, #8a3f8a 0%, #aa4faa 100%);
+    border-radius: 4px;
+    border: 1px solid #ca5fca;
+}
+
+.joint-spikes {
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 4px;
+}
+
+.joint-spikes:before,
+.joint-spikes:after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 4px;
+    background: linear-gradient(to top, #6a2f6a 0%, #ff6b35 100%);
+    border-radius: 0 0 50% 50%;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%);
+}
+
+.joint-spikes:before {
+    left: 1px;
+}
+
+.joint-spikes:after {
+    right: 1px;
+}
+
+.shin {
+    position: absolute;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 16px;
+    background: linear-gradient(to bottom, #1a0a1a 0%, #0a0a0a 100%);
+    border-radius: 8px 8px 4px 4px;
+    border: 1px solid #3a1f3a;
+}
+
+.shin-guard {
+    position: absolute;
+    top: 1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 6px;
+    background: linear-gradient(45deg, #5a2f5a 0%, #7a3f7a 100%);
+    border-radius: 4px;
+    border: 1px solid #9a4f9a;
+}
+
+.shin-runes {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 6px;
+}
+
+.shin-runes:before,
+.shin-runes:after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: rgba(255, 170, 0, 0.8);
+    border-radius: 50%;
+    animation: shinRuneFlicker 3s ease-in-out infinite;
+}
+
+.shin-runes:before {
+    left: 1px;
+    top: 1px;
+}
+
+.shin-runes:after {
+    right: 1px;
+    top: 3px;
+    animation-delay: 1.5s;
+}
+
+.ankle-joint {
+    position: absolute;
+    top: 38px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: #3a1f3a;
+    border-radius: 50%;
+    border: 2px solid #5a2f5a;
+}
+
+.foot {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 12px;
+    background: linear-gradient(45deg, #2a0f2a 0%, #1a0a1a 100%);
+    border-radius: 12px 12px 6px 6px;
+    border: 1px solid #4a1f4a;
+}
+
+.foot-pad {
+    position: absolute;
+    bottom: 1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 6px;
+    background: linear-gradient(45deg, #1a0a1a 0%, #0a0a0a 100%);
+    border-radius: 8px 8px 4px 4px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.toe-claws {
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 6px;
+}
+
+.toe-claw {
+    position: absolute;
+    width: 3px;
+    height: 6px;
+    background: linear-gradient(to bottom, #fff 0%, #bbb 100%);
+    border-radius: 0 0 50% 50%;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+    animation: toeClawFlicker 3.2s ease-in-out infinite;
+}
+
+.toe-claws .claw-1 {
+    left: 1px;
+}
+
+.toe-claws .claw-2 {
+    left: 50%;
+    transform: translateX(-50%);
+    animation-delay: 1s;
+}
+
+.toe-claws .claw-3 {
+    right: 1px;
+    animation-delay: 2s;
+}
+
+.right-guard {
+    right: 0;
+    transform: rotate(10deg);
+}
+
+/* Ultra-Detailed Additions */
+
+/* Fur Texture */
+.fur-texture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.fur-strand {
+    position: absolute;
+    width: 2px;
+    height: 8px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 0%, rgba(138, 43, 226, 0.2) 100%);
+    border-radius: 50%;
+    animation: furSway 3.5s ease-in-out infinite;
+}
+
+.strand-1 { top: 8px; left: 12px; animation-delay: 0s; }
+.strand-2 { top: 15px; left: 25px; animation-delay: 0.7s; }
+.strand-3 { top: 22px; left: 8px; animation-delay: 1.4s; }
+.strand-4 { top: 18px; left: 30px; animation-delay: 2.1s; }
+.strand-5 { top: 12px; left: 20px; animation-delay: 2.8s; }
+
+/* Head Shadows */
+.head-shadows {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.shadow-area {
+    position: absolute;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.3) 0%, transparent 60%);
+    border-radius: 50%;
+}
+
+.area-1 {
+    top: 15px;
+    right: 8px;
+    width: 12px;
+    height: 8px;
+}
+
+.area-2 {
+    top: 25px;
+    left: 6px;
+    width: 10px;
+    height: 6px;
+}
+
+/* Tribal Patterns */
+.tribal-pattern {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25px;
+    height: 20px;
+}
+
+.pattern-line {
+    position: absolute;
+    background: linear-gradient(45deg, #ff6b35 0%, #ffaa00 100%);
+    border-radius: 50%;
+    animation: tribalGlow 4s ease-in-out infinite;
+}
+
+.line-1 {
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 2px;
+    height: 12px;
+}
+
+.line-2 {
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-45deg);
+    width: 2px;
+    height: 8px;
+    animation-delay: 2s;
+}
+
+.pattern-dot {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: rgba(255, 170, 0, 0.8);
+    border-radius: 50%;
+    animation: dotPulse 3s ease-in-out infinite;
+}
+
+.dot-1 {
+    top: 3px;
+    left: 8px;
+}
+
+.dot-2 {
+    top: 12px;
+    right: 8px;
+    animation-delay: 1.5s;
+}
+
+/* Enhanced Horn Details */
+.segment-ridges {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.ridge {
+    position: absolute;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    animation: ridgeShimmer 2.8s ease-in-out infinite;
+}
+
+.segment-1 .ridge-1 {
+    left: 3px;
+    top: 2px;
+    height: 8px;
+}
+
+.segment-1 .ridge-2 {
+    left: 6px;
+    top: 4px;
+    height: 6px;
+    animation-delay: 0.5s;
+}
+
+.segment-1 .ridge-3 {
+    left: 9px;
+    top: 1px;
+    height: 10px;
+    animation-delay: 1s;
+}
+
+.segment-cracks {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.crack {
+    position: absolute;
+    width: 1px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+}
+
+.crack-1 {
+    left: 4px;
+    top: 6px;
+    height: 4px;
+    transform: rotate(15deg);
+}
+
+.crack-2 {
+    right: 3px;
+    top: 8px;
+    height: 3px;
+    transform: rotate(-20deg);
+}
+
+.energy-veins {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.vein {
+    position: absolute;
+    width: 1px;
+    background: linear-gradient(to bottom, #ff6b35 0%, #ffaa00 100%);
+    border-radius: 50%;
+    animation: veinPulse 2.2s ease-in-out infinite;
+}
+
+.vein-1 {
+    left: 2px;
+    top: 3px;
+    height: 8px;
+}
+
+.vein-2 {
+    right: 2px;
+    top: 5px;
+    height: 6px;
+    animation-delay: 1.1s;
+}
+
+.segment-spiral {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 100%;
+}
+
+.spiral-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, #ffaa00 0%, #fff700 50%, #ffffff 100%);
+    animation: spiralRotate 3s linear infinite;
+    transform-origin: center;
+}
+
+.tip-crystal {
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, #ffffff 0%, #fff700 50%, transparent 100%);
+    border-radius: 50%;
+    animation: crystalSparkle 1.8s ease-in-out infinite;
+}
+
+.rune-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: runeGlowPulse 2s ease-in-out infinite;
+}
+
+.ancient-symbols {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 15px;
+    height: 20px;
+}
+
+.symbol {
+    position: absolute;
+    font-size: 6px;
+    color: rgba(255, 170, 0, 0.7);
+    animation: symbolFloat 3.5s ease-in-out infinite;
+}
+
+.symbol-1 {
+    top: 3px;
+    left: 2px;
+    animation-delay: 0s;
+}
+
+.symbol-2 {
+    top: 12px;
+    right: 2px;
+    animation-delay: 1.75s;
+}
+
+.crown-spikes {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 8px;
+}
+
+.crown-spike-1,
+.crown-spike-2,
+.crown-spike-3 {
+    position: absolute;
+    width: 2px;
+    height: 6px;
+    background: linear-gradient(to top, #fff700 0%, #ffffff 100%);
+    border-radius: 0 0 50% 50%;
+    clip-path: polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%);
+    animation: crownSpikeGlow 2.5s ease-in-out infinite;
+}
+
+.crown-spike-1 {
+    left: 1px;
+    animation-delay: 0s;
+}
+
+.crown-spike-2 {
+    left: 50%;
+    transform: translateX(-50%);
+    height: 8px;
+    animation-delay: 0.8s;
+}
+
+.crown-spike-3 {
+    right: 1px;
+    animation-delay: 1.6s;
+}
+
+.crown-energy {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 247, 0, 0.6) 40%, transparent 70%);
+    border-radius: 50%;
+    animation: crownEnergyPulse 1.8s ease-in-out infinite;
+}
+
+/* Detailed Facial Features */
+.facial-scars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.scar {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+}
+
+.scar-1 {
+    top: 8px;
+    left: 12px;
+    width: 8px;
+    height: 1px;
+    transform: rotate(25deg);
+}
+
+.scar-2 {
+    top: 15px;
+    right: 10px;
+    width: 6px;
+    height: 1px;
+    transform: rotate(-15deg);
+}
+
+.scar-3 {
+    top: 22px;
+    left: 8px;
+    width: 4px;
+    height: 1px;
+    transform: rotate(45deg);
+}
+
+.expression-lines {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25px;
+    height: 8px;
+}
+
+.expression-line {
+    position: absolute;
+    width: 6px;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 50%;
+}
+
+.line-1 {
+    top: 2px;
+    left: 4px;
+    transform: rotate(-10deg);
+}
+
+.line-2 {
+    top: 2px;
+    right: 4px;
+    transform: rotate(10deg);
+}
+
+/* Enhanced Eye Details */
+.eye-socket-shadow {
+    position: absolute;
+    top: -2px;
+    left: -1px;
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.4) 0%, transparent 60%);
+    border-radius: 50%;
+}
+
+.eye-base {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    border-radius: 50%;
+    border: 1px solid #4a1f4a;
+    overflow: hidden;
+}
+
+.iris {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    background: radial-gradient(circle, #ff0040 0%, #8b0020 70%, #000 100%);
+    border-radius: 50%;
+}
+
+.pupil {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 2px;
+    height: 2px;
+    background: #000;
+    border-radius: 50%;
+}
+
+.pupil-reflection {
+    position: absolute;
+    top: 20%;
+    left: 30%;
+    width: 1px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: reflectionTwinkle 3s ease-in-out infinite;
+}
+
+.iris-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.iris-line {
+    position: absolute;
+    width: 1px;
+    background: rgba(255, 100, 100, 0.3);
+    border-radius: 50%;
+}
+
+.line-1 {
+    top: 1px;
+    left: 50%;
+    height: 4px;
+    transform: translateX(-50%);
+}
+
+.line-2 {
+    top: 50%;
+    left: 1px;
+    width: 4px;
+    height: 1px;
+    transform: translateY(-50%);
+}
+
+.line-3 {
+    top: 50%;
+    left: 50%;
+    width: 3px;
+    height: 1px;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.glow-core {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, #ff0040 0%, transparent 70%);
+    border-radius: 50%;
+    animation: glowCoreIntense 2s ease-in-out infinite alternate;
+}
+
+.glow-outer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle, rgba(255, 0, 64, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: glowOuterPulse 3s ease-in-out infinite;
+}
+
+.eyelid {
+    position: absolute;
+    top: -2px;
+    left: -1px;
+    width: 10px;
+    height: 4px;
+    pointer-events: none;
+}
+
+.lash {
+    position: absolute;
+    width: 1px;
+    height: 3px;
+    background: rgba(138, 43, 226, 0.6);
+    border-radius: 50%;
+    animation: lashSway 4s ease-in-out infinite;
+}
+
+.lash-1 {
+    top: 0;
+    left: 2px;
+    transform: rotate(-15deg);
+}
+
+.lash-2 {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    animation-delay: 1.3s;
+}
+
+.lash-3 {
+    top: 0;
+    right: 2px;
+    transform: rotate(15deg);
+    animation-delay: 2.6s;
+}
+
+/* Whiskers */
+.whiskers {
+    position: absolute;
+    top: 15px;
+    left: 0;
+    width: 100%;
+    height: 10px;
+}
+
+.whisker {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(to right, rgba(138, 43, 226, 0.8) 0%, transparent 100%);
+    border-radius: 50%;
+    animation: whiskerTwitch 3.5s ease-in-out infinite;
+}
+
+.whisker-left-1 {
+    top: 2px;
+    left: -8px;
+    width: 15px;
+    transform: rotate(-5deg);
+}
+
+.whisker-left-2 {
+    top: 5px;
+    left: -10px;
+    width: 18px;
+    transform: rotate(-2deg);
+    animation-delay: 1.2s;
+}
+
+.whisker-left-3 {
+    top: 8px;
+    left: -9px;
+    width: 16px;
+    transform: rotate(2deg);
+    animation-delay: 2.4s;
+}
+
+.whisker-right-1 {
+    top: 2px;
+    right: -8px;
+    width: 15px;
+    transform: rotate(5deg);
+    animation-delay: 0.6s;
+}
+
+.whisker-right-2 {
+    top: 5px;
+    right: -10px;
+    width: 18px;
+    transform: rotate(2deg);
+    animation-delay: 1.8s;
+}
+
+.whisker-right-3 {
+    top: 8px;
+    right: -9px;
+    width: 16px;
+    transform: rotate(-2deg);
+    animation-delay: 3s;
+}
+
+/* Enhanced Nose */
+.nostril {
+    position: absolute;
+    width: 1px;
+    height: 2px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+}
+
+.nostril-1 {
+    bottom: 2px;
+    left: 40%;
+}
+
+.nostril-2 {
+    bottom: 2px;
+    right: 40%;
+}
+
+.nose-highlight {
+    position: absolute;
+    top: 1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+}
+
+/* Enhanced Mouth */
+.mouth-line {
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+}
+
+.lip-detail {
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.fang-groove {
+    position: absolute;
+    top: 1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 3px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+}
+
+.fang-tip {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    animation: fangGlint 4s ease-in-out infinite;
+}
+
+.teeth {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 2px;
+}
+
+.tooth {
+    position: absolute;
+    width: 1px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+}
+
+.tooth-1 {
+    left: 2px;
+}
+
+.tooth-2 {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.tooth-3 {
+    right: 2px;
+}
+
+/* Enhanced Ear Details */
+.ear-base {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.ear-fur {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 8px;
+    height: 12px;
+}
+
+.fur-tuft {
+    position: absolute;
+    width: 1px;
+    height: 4px;
+    background: linear-gradient(to top, rgba(138, 43, 226, 0.4) 0%, rgba(255, 107, 53, 0.6) 100%);
+    border-radius: 50%;
+    animation: furTuftSway 3.8s ease-in-out infinite;
+}
+
+.tuft-1 {
+    top: 2px;
+    left: 2px;
+}
+
+.tuft-2 {
+    top: 6px;
+    left: 4px;
+    animation-delay: 1.3s;
+}
+
+.tuft-3 {
+    top: 4px;
+    right: 2px;
+    animation-delay: 2.6s;
+}
+
+.inner-shadow {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 4px;
+    height: 6px;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.inner-highlight {
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.tuft-energy {
+    position: absolute;
+    top: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 4px;
+    background: radial-gradient(circle, rgba(255, 107, 53, 0.8) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: tuftEnergyPulse 2.2s ease-in-out infinite;
+}
+
+.ear-jewelry {
+    position: absolute;
+    top: 8px;
+    right: 2px;
+    width: 4px;
+    height: 4px;
+}
+
+.earring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 3px;
+    background: linear-gradient(45deg, #6a2f6a 0%, #8a3f8a 100%);
+    border-radius: 50%;
+    border: 1px solid #aa4faa;
+}
+
+.gem {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1px;
+    height: 1px;
+    background: rgba(255, 170, 0, 0.9);
+    border-radius: 50%;
+    animation: gemSparkle 2.8s ease-in-out infinite;
+}
+
+/* Head Aura Effects */
+.head-aura {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    pointer-events: none;
+}
+
+.aura-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    border: 1px solid rgba(138, 43, 226, 0.3);
+}
+
+.ring-1 {
+    width: 45px;
+    height: 45px;
+    transform: translate(-50%, -50%);
+    animation: auraRingRotate 8s linear infinite;
+}
+
+.ring-2 {
+    width: 55px;
+    height: 55px;
+    transform: translate(-50%, -50%);
+    animation: auraRingRotate 12s linear infinite reverse;
+    animation-delay: 2s;
+}
+
+.floating-symbols {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.float-symbol {
+    position: absolute;
+    font-size: 8px;
+    color: rgba(255, 170, 0, 0.6);
+    animation: symbolOrbit 6s linear infinite;
+}
+
+.symbol-1 {
+    top: 20%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.symbol-2 {
+    top: 60%;
+    right: 25%;
+    animation-delay: 2s;
+}
+
+.symbol-3 {
+    bottom: 30%;
+    left: 30%;
+    animation-delay: 4s;
+}
+
+.demon-cat-aura {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, rgba(138, 43, 226, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: demonAura 3s ease-in-out infinite;
+}
+
+.demon-cat-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.demon-cat-particles .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(138, 43, 226, 0.8);
+    border-radius: 50%;
+    animation: demonParticle 2s ease-in-out infinite;
+}
+
+.demon-cat-particles .particle:nth-child(1) {
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.demon-cat-particles .particle:nth-child(2) {
+    top: 40%;
+    left: 80%;
+    animation-delay: 0.4s;
+}
+
+.demon-cat-particles .particle:nth-child(3) {
+    top: 60%;
+    left: 20%;
+    animation-delay: 0.8s;
+}
+
+.demon-cat-particles .particle:nth-child(4) {
+    top: 80%;
+    left: 70%;
+    animation-delay: 1.2s;
+}
+
+.demon-cat-particles .particle:nth-child(5) {
+    top: 30%;
+    left: 50%;
+    animation-delay: 1.6s;
+}
+
+/* Atmospheric Effects */
+.atmosphere {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 7;
+    pointer-events: none;
+}
+
+.mist {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200%;
+    height: 30%;
+    background: linear-gradient(to top, rgba(200, 200, 255, 0.1) 0%, transparent 100%);
+    animation: mistFlow 25s linear infinite;
+}
+
+.shadows {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+}
+
+/* Animations */
+@keyframes parallaxFar {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-33.33%); }
+}
+
+@keyframes parallaxMid {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-25%); }
+}
+
+@keyframes parallaxNear {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-20%); }
+}
+
+@keyframes houseFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes tailWag {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(15deg); }
+}
+
+@keyframes catFlee {
+    0% { transform: translateX(0) scale(1); }
+    50% { transform: translateX(-30px) scale(0.8); }
+    100% { transform: translateX(-60px) scale(0.6); opacity: 0; }
+}
+
+@keyframes demonCatWalk {
+    0% { left: -150px; }
+    100% { left: calc(100% + 50px); }
+}
+
+@keyframes demonCatBob {
+    0%, 100% { transform: translateX(-50%) translateY(0px); }
+    50% { transform: translateX(-50%) translateY(-3px); }
+}
+
+@keyframes demonEyeGlow {
+    0% { opacity: 0.8; box-shadow: 15px 0 0 #ff0040, 0 0 10px #ff0040, 15px 0 10px #ff0040; }
+    100% { opacity: 1; box-shadow: 15px 0 0 #ff0060, 0 0 20px #ff0040, 15px 0 20px #ff0040; }
+}
+
+@keyframes demonTailSwish {
+    0% { transform: rotate(-10deg); }
+    100% { transform: rotate(10deg); }
+}
+
+@keyframes demonBipedWalkLeft {
+    0% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-8px) rotate(-10deg); }
+    50% { transform: translateY(-15px) rotate(-15deg); }
+    75% { transform: translateY(-8px) rotate(-5deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes demonBipedWalkRight {
+    0% { transform: translateY(-8px) rotate(-5deg); }
+    25% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(10deg); }
+    75% { transform: translateY(-15px) rotate(15deg); }
+    100% { transform: translateY(-8px) rotate(-5deg); }
+}
+
+@keyframes hornGlow {
+    0% {
+        box-shadow: 0 0 15px rgba(255, 170, 0, 0.8);
+        opacity: 0.9;
+    }
+    100% {
+        box-shadow: 0 0 25px rgba(255, 170, 0, 1), 0 0 35px rgba(255, 107, 53, 0.6);
+        opacity: 1;
+    }
+}
+
+@keyframes hornSparkle {
+    0%, 100% {
+        opacity: 0.7;
+        transform: translateX(-50%) scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1.3);
+    }
+}
+
+/* New Detailed Animation Keyframes */
+@keyframes markingPulse {
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes hornSegmentGlow {
+    0% { opacity: 0.9; box-shadow: 0 0 15px rgba(255, 107, 53, 0.6); }
+    100% { opacity: 1; box-shadow: 0 0 25px rgba(255, 170, 0, 1); }
+}
+
+@keyframes runeFlicker {
+    0%, 70%, 100% { opacity: 0.9; }
+    75%, 85% { opacity: 0.3; }
+    80% { opacity: 1; }
+}
+
+@keyframes crownPulse {
+    0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+    50% { transform: translateX(-50%) scale(1.3); opacity: 1; }
+}
+
+@keyframes eyeIntensePulse {
+    0% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+@keyframes tuftGlow {
+    0% { opacity: 0.7; box-shadow: 0 0 8px rgba(255, 107, 53, 0.4); }
+    100% { opacity: 1; box-shadow: 0 0 15px rgba(255, 107, 53, 0.8); }
+}
+
+@keyframes torsoBreathing {
+    0%, 100% { transform: translateX(-50%) scaleY(1); }
+    50% { transform: translateX(-50%) scaleY(1.02); }
+}
+
+@keyframes crystalPulse {
+    0%, 100% {
+        opacity: 0.9;
+        transform: translateX(-50%) rotate(45deg) scale(1);
+        box-shadow: 0 0 15px rgba(255, 170, 0, 0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(-50%) rotate(45deg) scale(1.1);
+        box-shadow: 0 0 25px rgba(255, 170, 0, 1);
+    }
+}
+
+@keyframes spineGlow {
+    0% { opacity: 0.8; }
+    100% { opacity: 1; box-shadow: 0 0 12px rgba(255, 107, 53, 0.6); }
+}
+
+@keyframes sideRunePulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.3); }
+}
+
+@keyframes leftArmSwing {
+    0% { transform: rotate(0deg) translateY(0px); }
+    25% { transform: rotate(-8deg) translateY(-2px); }
+    50% { transform: rotate(-15deg) translateY(-3px); }
+    75% { transform: rotate(-8deg) translateY(-2px); }
+    100% { transform: rotate(0deg) translateY(0px); }
+}
+
+@keyframes rightArmSwing {
+    0% { transform: rotate(-8deg) translateY(-2px); }
+    25% { transform: rotate(0deg) translateY(0px); }
+    50% { transform: rotate(8deg) translateY(-2px); }
+    75% { transform: rotate(15deg) translateY(-3px); }
+    100% { transform: rotate(-8deg) translateY(-2px); }
+}
+
+@keyframes clawFlicker {
+    0%, 90%, 100% { opacity: 1; }
+    92%, 96% { opacity: 0.7; }
+    94% { opacity: 1; }
+}
+
+@keyframes complexTailSwish {
+    0% { transform: rotate(-5deg); }
+    100% { transform: rotate(8deg); }
+}
+
+@keyframes tailSeg1 {
+    0% { transform: translateY(-50%) rotate(0deg); }
+    100% { transform: translateY(-50%) rotate(3deg); }
+}
+
+@keyframes tailSeg2 {
+    0% { transform: translateY(-50%) rotate(0deg); }
+    100% { transform: translateY(-50%) rotate(5deg); }
+}
+
+@keyframes tailSeg3 {
+    0% { transform: translateY(-50%) rotate(0deg); }
+    100% { transform: translateY(-50%) rotate(7deg); }
+}
+
+@keyframes tailSeg4 {
+    0% { transform: translateY(-50%) rotate(0deg); }
+    100% { transform: translateY(-50%) rotate(10deg); }
+}
+
+@keyframes spikeGlow {
+    0% { opacity: 0.8; box-shadow: 0 0 6px rgba(255, 107, 53, 0.4); }
+    100% { opacity: 1; box-shadow: 0 0 12px rgba(255, 107, 53, 0.8); }
+}
+
+@keyframes orbFloat {
+    0%, 100% { transform: translateY(0px) scale(1); opacity: 0.8; }
+    33% { transform: translateY(-8px) scale(1.2); opacity: 1; }
+    66% { transform: translateY(-4px) scale(0.9); opacity: 0.6; }
+}
+
+@keyframes detailedLeftLegWalk {
+    0% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-8px) rotate(-12deg); }
+    50% { transform: translateY(-15px) rotate(-20deg); }
+    75% { transform: translateY(-8px) rotate(-8deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes detailedRightLegWalk {
+    0% { transform: translateY(-8px) rotate(-8deg); }
+    25% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(12deg); }
+    75% { transform: translateY(-15px) rotate(20deg); }
+    100% { transform: translateY(-8px) rotate(-8deg); }
+}
+
+@keyframes thighMarkGlow {
+    0% { opacity: 0.7; }
+    100% { opacity: 1; box-shadow: 0 0 8px rgba(255, 170, 0, 0.6); }
+}
+
+@keyframes shinRuneFlicker {
+    0%, 85%, 100% { opacity: 0.8; }
+    87%, 91% { opacity: 0.4; }
+    89% { opacity: 1; }
+}
+
+/* Simple Cat Animations */
+@keyframes hornGlow {
+    0% {
+        box-shadow: 0 0 10px rgba(255, 170, 0, 0.8);
+        opacity: 0.9;
+    }
+    100% {
+        box-shadow: 0 0 20px rgba(255, 170, 0, 1);
+        opacity: 1;
+    }
+}
+
+@keyframes eyeGlow {
+    0% {
+        box-shadow: 0 0 6px #ff0040;
+        opacity: 0.8;
+    }
+    100% {
+        box-shadow: 0 0 12px #ff0040;
+        opacity: 1;
+    }
+}
+
+@keyframes bodyBreathe {
+    0%, 100% { transform: translateX(-50%) scaleY(1); }
+    50% { transform: translateX(-50%) scaleY(1.02); }
+}
+
+@keyframes leftArmSwing {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    50% { transform: rotate(-10deg); }
+    75% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+}
+
+@keyframes rightArmSwing {
+    0% { transform: rotate(-5deg); }
+    25% { transform: rotate(0deg); }
+    50% { transform: rotate(5deg); }
+    75% { transform: rotate(10deg); }
+    100% { transform: rotate(-5deg); }
+}
+
+@keyframes leftLegWalk {
+    0% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-6px) rotate(-8deg); }
+    50% { transform: translateY(-12px) rotate(-15deg); }
+    75% { transform: translateY(-6px) rotate(-5deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes rightLegWalk {
+    0% { transform: translateY(-6px) rotate(-5deg); }
+    25% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-6px) rotate(8deg); }
+    75% { transform: translateY(-12px) rotate(15deg); }
+    100% { transform: translateY(-6px) rotate(-5deg); }
+}
+
+@keyframes tailSwish {
+    0% { transform: rotate(-5deg); }
+    100% { transform: rotate(8deg); }
+}
+
+@keyframes demonAura {
+    0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.3; }
+    50% { transform: scale(1.2) rotate(180deg); opacity: 0.6; }
+}
+
+@keyframes demonParticle {
+    0% { transform: translateY(0px) scale(1); opacity: 1; }
+    50% { transform: translateY(-20px) scale(1.5); opacity: 0.7; }
+    100% { transform: translateY(-40px) scale(0.5); opacity: 0; }
+}
+
+@keyframes mistFlow {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}

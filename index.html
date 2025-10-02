@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Night Eye</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="gameContainer">
+        <!-- Start Screen -->
+        <div id="startScreen" class="screen active">
+            <div class="title-container">
+                <h1 class="game-title">
+                    NIGHT
+                    <span class="eye-icon">👁</span>
+                    EYE
+                </h1>
+            </div>
+            <button id="playButton" class="play-button">PLAY</button>
+        </div>
+
+        <!-- Character Selection Screen -->
+        <div id="selectionScreen" class="screen">
+            <div class="selection-container">
+                <h2 class="selection-title">Choose Your Path</h2>
+                <h3 class="profile-title">SELECT PROFILE</h3>
+                <div class="rectangles-row">
+                    <div class="game-rectangle" data-character="1">
+                        <div class="rectangle-content">
+                            <div class="new-game-text">NEW GAME</div>
+                            <div class="rectangle-number">1</div>
+                        </div>
+                    </div>
+                    <div class="game-rectangle" data-character="2">
+                        <div class="rectangle-content">
+                            <div class="new-game-text">NEW GAME</div>
+                            <div class="rectangle-number">2</div>
+                        </div>
+                    </div>
+                    <div class="game-rectangle" data-character="3">
+                        <div class="rectangle-content">
+                            <div class="new-game-text">NEW GAME</div>
+                            <div class="rectangle-number">3</div>
+                        </div>
+                    </div>
+                    <div class="game-rectangle" data-character="4">
+                        <div class="rectangle-content">
+                            <div class="new-game-text">NEW GAME</div>
+                            <div class="rectangle-number">4</div>
+                        </div>
+                    </div>
+                </div>
+                <button id="backButton" class="back-button">BACK</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="screen">
+            <div class="game-area">
+                <div class="loading-animation">
+                    <div class="loading-text">Entering the Night...</div>
+                    <div class="loading-bar">
+                        <div class="loading-progress"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Demon Cat Animation Screen -->
+        <div id="demonCatScreen" class="screen">
+            <div class="village-scene">
+                <!-- Background Layers -->
+                <div class="bg-layer bg-far"></div>
+                <div class="bg-layer bg-mid"></div>
+                <div class="bg-layer bg-near"></div>
+
+                <!-- Village Elements -->
+                <div class="village-container">
+                    <div class="house house-1">
+                        <div class="window window-glow">
+                            <div class="cat-silhouette cat-1"></div>
+                        </div>
+                    </div>
+                    <div class="house house-2">
+                        <div class="window">
+                            <div class="cat-silhouette cat-2"></div>
+                        </div>
+                    </div>
+                    <div class="house house-3">
+                        <div class="window window-glow">
+                            <div class="cat-silhouette cat-3"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Village Cats -->
+                <div class="village-cats">
+                    <div class="village-cat cat-small" style="left: 15%; bottom: 20%;"></div>
+                    <div class="village-cat cat-medium" style="left: 35%; bottom: 15%;"></div>
+                    <div class="village-cat cat-large" style="left: 65%; bottom: 25%;"></div>
+                    <div class="village-cat cat-sitting" style="left: 80%; bottom: 18%;"></div>
+                </div>
+
+                <!-- Demon Cat -->
+                <div class="demon-cat-container">
+                    <div class="demon-cat">
+                        <div class="simple-cat-body">
+                            <!-- Head -->
+                            <div class="cat-head">
+                                <div class="head-base"></div>
+                                <div class="cat-horn"></div>
+                                <div class="cat-ears">
+                                    <div class="ear left-ear"></div>
+                                    <div class="ear right-ear"></div>
+                                </div>
+                                <div class="cat-face">
+                                    <div class="eye left-eye"></div>
+                                    <div class="eye right-eye"></div>
+                                    <div class="nose"></div>
+                                    <div class="mouth"></div>
+                                </div>
+                            </div>
+
+                            <!-- Body -->
+                            <div class="cat-torso"></div>
+
+                            <!-- Arms -->
+                            <div class="cat-arms">
+                                <div class="arm left-arm"></div>
+                                <div class="arm right-arm"></div>
+                            </div>
+
+                            <!-- Shorts/Pants -->
+                            <div class="cat-shorts"></div>
+
+                            <!-- Legs -->
+                            <div class="cat-legs">
+                                <div class="leg left-leg"></div>
+                                <div class="leg right-leg"></div>
+                            </div>
+
+                            <!-- Tail -->
+                            <div class="cat-tail"></div>
+                        </div>
+                        <div class="demon-cat-aura"></div>
+                        <div class="demon-cat-particles">
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Atmospheric Effects -->
+                <div class="atmosphere">
+                    <div class="mist"></div>
+                    <div class="shadows"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
